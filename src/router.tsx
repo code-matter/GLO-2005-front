@@ -1,7 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./pages/Home";
-import Register from "./pages/register";
-import Login from "./pages/login";
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import Compagnons from "./pages/Compagnons/Compagnons";
+import Compagnon from "./pages/Compagnons/Compagnon/Compagnon";
+import Publications from "./pages/Publications/Publications";
+import Publication from "./pages/Publications/Publication/Publication";
+import Countries from "./pages/Countries/Countries";
+import Country from "./pages/Countries/Country/Country";
+import Settings from "./pages/Settings/Settings";
 
 const router = createBrowserRouter([
   {
@@ -9,13 +16,20 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "/Login",
+    path: "/connexion",
     element: <Login />,
   },
   {
-    path: "/Register",
-    element: <Register />
-  }
+    path: "/inscription",
+    element: <Register />,
+  },
+  { path: "/compagnons", element: <Compagnons /> },
+  { path: "/compagnons/:compagnonId", element: <Compagnon /> },
+  { path: "/publications", element: <Publications /> },
+  { path: "/publications/:publicationId", element: <Publication /> },
+  { path: "/pays", element: <Countries /> },
+  { path: "/pays/:paysId", element: <Country /> },
+  { path: "/configuration", element: <Settings /> },
 ]);
 
 export const AppRouter = () => <RouterProvider router={router} />;
