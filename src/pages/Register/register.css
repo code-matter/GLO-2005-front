@@ -1,33 +1,37 @@
-body {
+body .inscriprionContainer{
+  margin-top: 1.5vh;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
-.form {
+#inscriptionForm {
 display: flex;
 flex-direction: column;
 gap: 10px;
 max-width: 350px;
 background: rgb(2,0,36);
-background: rgb(2,0,36);
-padding: 20px;
+padding: 5px;
 border-radius: 20px;
 position: relative;
 }
 
-.title {
+#inscriptionForm .title {
 font-size: 28px;
 color: rgb(255, 255, 255);
 font-weight: 600;
 letter-spacing: -1px;
 position: relative;
-display: flex;
-align-items: center;
 padding-left: 10px;
 }
 
-.message, .signin {
+#inscriptionForm .message{
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#inscriptionForm .message, .signin {
 color: rgba(200, 249, 255, 0.822);
 font-size: 14px;
 }
@@ -44,25 +48,25 @@ color: rgb(0, 141, 235);
 text-decoration: underline royalblue;
 }
 
-.flex {
+#inscriptionForm .flex {
 display: flex;
 width: 100%;
 gap: 6px;
 }
 
-.form label {
+#inscriptionForm {
 position: relative;
 }
 
-.form label .input {
+#inscriptionForm #inscriptionInput {
 width: 100%;
-padding: 10px 10px 20px 10px;
+padding: 6px 10px 20px 10px;
 outline: 0;
 border: 1px solid rgba(0, 204, 255, 0.363);
 border-radius: 10px;
 }
 
-.form label .input + span {
+#inscriptionForm #inscriptionInput + span {
 position: absolute;
 left: 10px;
 top: 15px;
@@ -72,20 +76,20 @@ cursor: text;
 transition: 0.3s ease;
 }
 
-.form label .input:placeholder-shown + span {
+#inscriptionForm #inscriptionInput:placeholder-shown + span {
 top: 15px;
 font-size: 0.9em;
 }
 
 /**/
-.form label .input:focus + span,.form label .input:valid + span {
+#inscriptionForm #inscriptionInput:focus + span,#inscriptionForm #inscriptionInput:valid + span {
 top: 30px;
 font-size: 0.7em;
 font-weight: 600;
 }
 
-.form label .input:valid + span {
-color: green;
+#inscriptionForm #inscriptionInput:valid + span {
+color: rgb(0, 0, 0);
 }
 
 .submit {

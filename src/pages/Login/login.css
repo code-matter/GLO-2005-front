@@ -1,10 +1,10 @@
-body .container {
+body .connexionContainer {
+    margin-top: 5%;
     display: flex;
     justify-content: center;
-
 }
 
-.form {
+#connexionForm {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -17,6 +17,14 @@ body .container {
   border-radius: 20px;
   position: relative;
 }
+
+#connexionForm .message{
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 .title {
   font-size: 28px;
@@ -46,19 +54,19 @@ body .container {
   text-decoration: underline royalblue;
 }
 
-.form label {
+#connexionForm {
   position: relative;
 }
 
-.form label .input {
+#connexionForm #connexionInput {
   width: 100%;
-  padding: 10px 10px 20px 10px;
+  padding: 8px 10px 20px 10px;
   outline: 0;
   border: 1px solid rgba(0, 204, 255, 0.363);
   border-radius: 10px;
 }
 
-.form label .input + span {
+#connexionForm #connexionInput + span {
   position: absolute;
   left: 10px;
   top: 15px;
@@ -68,13 +76,13 @@ body .container {
   transition: 0.3s ease;
 }
 
-.form label .input:placeholder-shown + span {
+#connexionForm #connexionInput:placeholder-shown + span {
   top: 15px;
   font-size: 0.9em;
 }
 
 /**/
-.form label .input:focus + span,.form label .input:valid + span {
+#connexionForm #connexionInput:focus + span,#connexionForm #connexionInput:valid + span {
   top: 30px;
   font-size: 0.7em;
   font-weight: 600;

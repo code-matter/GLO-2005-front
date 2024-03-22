@@ -1,9 +1,10 @@
+"""Modifier l'entierté du projet pour qu'il soit lié au"""
+
+
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS, cross_origin
 from utilitaire import *
 import pymysql
-
-
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}}) #le ressources=... c'était pour voir avec postman c'est pas nécessaire
@@ -16,26 +17,24 @@ connection = pymysql.connect(host='localhost', user='root', password=MDPSQL, db=
 cur = connection.cursor()
 
 
-@app.route('/Register', methods=['GET', 'POST', 'OPTIONS'])
+@app.route('/inscription', methods=['POST', 'OPTIONS'])
 def register():
     if request.method == 'POST':
         data = request.json
         # Traitement des données ici
         # Exemple de traitement des données
-        firstname = data['firstname']
-        lastname = data['lastname']
+        firstname = data['prenom']
+        lastname = data['nom']
         username = data['username']
         email = data['email']
-        mdp = crypt(data['mdp'])
-        cmdp = crypt(data['cmdp'])
+        mdp = crypt(data['password'])
         # Répondez avec un message de succès
         dicto = {
             'firstname': firstname,
             'lastname': lastname,
             'username': username,
             'email': email,
-            'mdp': mdp,
-            'cmdp': cmdp
+            'mdp': mdp
         }
 
         try:
@@ -60,7 +59,7 @@ def register():
     #     return 'GET request received'
 
 
-@app.route("/Login", methods=["GET", "POST",'OPTIONS'])
+@app.route("/connexion", methods=["GET", "POST",'OPTIONS'])
 def login():
     if request.method == 'POST':
         data = request.json
