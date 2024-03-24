@@ -1,0 +1,129 @@
+-- Active: 1706150356599@@127.0.0.1@3306@compagnon
+
+/*Il faut implémenter les cardinalités*/
+CREATE DATABASE IF NOT EXISTS compagnon;
+
+USE compagnon;
+/*Création des tables d'entités*/
+/*Question: On rajoute la table région dans notre BD???*/
+CREATE TABLE IF NOT EXISTS Regions (
+            id integer NOT NULL PRIMARY KEY AUTO_INCREMENT, nom varchar(50),
+            date_creation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            date_modification timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );
+CREATE TABLE IF NOT EXISTS Pays (
+            id integer NOT NULL PRIMARY KEY AUTO_INCREMENT, nom varchar(50),
+            region_id integer NULL, devise varchar(5),
+            date_creation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            date_modification timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (region_id) REFERENCES Regions(id)
+        );
+CREATE TABLE IF NOT EXISTS Compagnons (
+            username varchar(50) PRIMARY KEY, nom varchar(50),
+            prenom varchar(50), age integer,
+            email varchar(50), password varchar(50),
+            description longtext, evaluation double,
+            photo_id varchar(100), pays_id integer NULL,
+            date_creation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            date_modification timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (pays_id) REFERENCES Pays(id)
+            /*Faire une gachette en cas de Update sur la photo*/
+            /*trigger d'update de username --> ProfilePic, Amitié*/
+            );
+
+CREATE TABLE IF NOT EXISTS ProfilePic (
+            user_id varchar(50)UNIQUE, nom_fichier varchar(100),
+            date_creation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            date_modification timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES Compagnons(username) ON DELETE CASCADE
+            );
+
+
+
+CREATE TABLE IF NOT EXISTS Publications (
+            id integer NOT NULL PRIMARY KEY AUTO_INCREMENT,
+            compagnon_id varchar(50),
+            pays_id integer NULL, titre longtext,
+            budget double, description longtext,
+            date_creation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            date_modification timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(compagnon_id) REFERENCES Compagnons(username) ON DELETE CASCADE,
+            FOREIGN KEY(pays_id) REFERENCES Pays(id)
+	    );
+
+CREATE TABLE IF NOT EXISTS PublicationPic (
+            pub_id integer, nom_fichier varchar(100),
+            date_creation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            date_modification timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (pub_id) REFERENCES Publications(id) ON DELETE CASCADE
+            );
+
+/*Table de relation entre entités*/
+
+/*------------------Rapport à compagnon------------------*/
+CREATE TABLE IF NOT EXISTS Amis(
+            compagnon_id varchar(50), ami varchar(50),
+            PRIMARY KEY (compagnon_id, ami),
+            FOREIGN KEY (compagnon_id) REFERENCES Compagnons(username) ON DELETE CASCADE,
+            FOREIGN KEY (ami) REFERENCES Compagnons(username) ON DELETE CASCADE
+            );
+
+CREATE TABLE IF NOT EXISTS Publie(
+            compagnon_id varchar(50), pub_id integer,
+            PRIMARY KEY (compagnon_id, pub_id),
+            FOREIGN KEY (compagnon_id) REFERENCES Compagnons(username) ON DELETE CASCADE,
+            FOREIGN KEY (pub_id) REFERENCES Publications(id) ON DELETE CASCADE
+            );
+
+CREATE TABLE IF NOT EXISTS Sauvegarde(
+            compagnon_id varchar(50), pub_id integer,
+            PRIMARY KEY (compagnon_id, pub_id),
+            FOREIGN KEY (compagnon_id) REFERENCES Compagnons(username) ON DELETE CASCADE,
+            FOREIGN KEY (pub_id) REFERENCES Publications(id) ON DELETE CASCADE
+            );
+
+CREATE TABLE IF NOT EXISTS AimePublication(
+            compagnon_id varchar(50), pub_id integer,
+            PRIMARY KEY (compagnon_id, pub_id),
+            FOREIGN KEY (compagnon_id) REFERENCES Compagnons(username) ON DELETE CASCADE,
+            FOREIGN KEY (pub_id) REFERENCES Publications(id) ON DELETE CASCADE
+            );
+
+CREATE TABLE IF NOT EXISTS AimePays(
+            compagnon_id varchar(50), pays_id integer,
+            PRIMARY KEY (compagnon_id, pays_id),
+            FOREIGN KEY (compagnon_id) REFERENCES Compagnons(username) ON DELETE CASCADE,
+            FOREIGN KEY (pays_id) REFERENCES Pays(id) ON DELETE CASCADE
+            );
+
+CREATE TABLE IF NOT EXISTS AimePays(
+            compagnon_id varchar(50), pays_id integer,
+            PRIMARY KEY (compagnon_id, pays_id),
+            FOREIGN KEY (compagnon_id) REFERENCES Compagnons(username) ON DELETE CASCADE,
+            FOREIGN KEY (pays_id) REFERENCES Pays(id) ON DELETE CASCADE
+            );
+/*------------------Fin Rapport à compagnon------------------*/
+
+/*------------------Rapport à publication------------------*/
+CREATE TABLE IF NOT EXISTS Contient(
+            pub_id integer, pays_id integer,
+            PRIMARY KEY (pub_id, pays_id),
+            FOREIGN KEY (pub_id) REFERENCES Publications(id) ON DELETE CASCADE,
+            FOREIGN KEY (pays_id) REFERENCES Pays(id)
+            );
+/*------------------Fin Rapport à publication------------------*/
+
+/*------------------Fonction/Procédure------------------*/
+
+/*------------------Fin Fonction/Procédure------------------*/
+
+/*------------------Gachettes/trigger------------------*/
+
+/*------------------Fin Gachettes/trigger------------------*/
+
+
+/*------------------Indexation------------------*/
+
+/*------------------Fin Indexation------------------*/
+
+/*SELECT * FROM Compagnons WHERE username='yey2513' OR email='yey2513';*/

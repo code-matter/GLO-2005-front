@@ -2,19 +2,23 @@ import { Button, Form, Input } from "antd";
 import "./login.css";
 import { LoginSignupService } from "../../services/LoginSignup/loginSignup";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [user, setUser] = useState<any | null>(null);
+  const navigation = useNavigate();
 
   const handleSubmitForm = async (formData: unknown) => {
     try {
-      const data = await LoginSignupService.logIn(formData);
-      const user = await data.json();
-
+      const user = await LoginSignupService.logIn(formData);
       setUser(user[0]);
-    } catch (error) {
-      console.error(error);
+      localStorage.setItem("user", JSON.stringify(user))
+      navigation(`/${user.username}`, {state: {user}});
+
+    } catch (error: any) {
+      alert(error.message);
     }
+    
   };
 
   return (

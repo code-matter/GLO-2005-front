@@ -9,11 +9,16 @@ import Publication from "./pages/Publications/Publication/Publication";
 import Countries from "./pages/Countries/Countries";
 import Country from "./pages/Countries/Country/Country";
 import Settings from "./pages/Settings/Settings";
+import Profile from "./pages/Profile/Profile";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/:username",
+    element: <Profile />
   },
   {
     path: "/connexion",

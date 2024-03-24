@@ -9,10 +9,12 @@ function Register() {
   const handleSubmit = async (formData: unknown) => {
     try {
       await LoginSignupService.signUp(formData);
-    } catch (error) {
-      console.error(error);
-    }
-    navigation('/Login');
+      navigation('/connexion');
+    } 
+    catch (error:any) {
+      window.alert(error.message);
+      }
+
   };
 
   return (
@@ -51,12 +53,12 @@ function Register() {
 
           <Form.Item name="password">
             <label>
-              <Input type="password" id="inscriptionInput"/>
+              <Input id="inscriptionInput"/>
               <span>Mot de passe</span>
             </label>
           </Form.Item>
 
-          <Form.Item name="pays_id">
+          <Form.Item name="pays">
             <label>
               <Select options={[{ value: 1, label: "Canada" }]} allowClear defaultValue="Pays"/>
             </label>
