@@ -12,13 +12,15 @@ function Login() {
     try {
       const user = await LoginSignupService.logIn(formData);
       setUser(user[0]);
-      localStorage.setItem("user", JSON.stringify(user))
+      console.log(user);
+      localStorage.setItem("user", user)
+      console.log(localStorage.getItem("user"));
       navigation(`/${user.username}`, {state: {user}});
 
     } catch (error: any) {
       alert(error.message);
     }
-    
+
   };
 
   return (

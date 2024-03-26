@@ -6,16 +6,37 @@ import { useNavigate } from "react-router-dom";
 function Register() {
   const navigation = useNavigate();
 
-  const handleSubmit = async (formData: unknown) => {
+  const handleSubmit = async (formData: any) => {
     try {
-      await LoginSignupService.signUp(formData);
-      navigation('/connexion');
-    } 
-    catch (error:any) {
-      window.alert(error.message);
+      // Vérifier les champs vides avant de soumettre les données
+      if (!formData['username']) {
+        alert("Veuillez entrer un nom d'utilisateur");
+        return;
+      }
+      if (!formData['prenom']) {
+        alert("Veuillez entrer un prénom");
+        return;
+      }
+      if (!formData['nom']) {
+        alert("Veuillez entrer un nom");
+        return;
+      }
+      if (!formData['password']) {
+        alert("Veuillez entrer un mot de passe");
+        return;
       }
 
+      // Soumettre les données du formulaire
+      await LoginSignupService.signUp(formData);
+
+      // Naviguer vers la page de connexion après la soumission réussie
+      navigation('/connexion');
+    } catch (error:any) {
+      // Gérer les erreurs de soumission
+      window.alert(error.message);
+    }
   };
+
 
   return (
     <>

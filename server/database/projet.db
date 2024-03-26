@@ -118,12 +118,76 @@ CREATE TABLE IF NOT EXISTS Contient(
 /*------------------Fin Fonction/Procédure------------------*/
 
 /*------------------Gachettes/trigger------------------*/
+-gachette pour nom Compagnons( si nom change foreign key dois changer aussi)
+    DELIMITER //
+    CREATE TRIGGER nomCompagnons 
+    AFTER UPDATE ON Compagnons 
+    FOR EACH ROW
+    BEGIN
+       IF NEW.username != OLD.username
+       THEN UPDATE ON ProfilePic SET user_id = NEW.username;
+       THEN UPDATE ON Publications SET user_id = NEW.username;
+       THEN UPDATE ON Amis SET user_id = NEW.username;
+       THEN UPDATE ON Publie SET user_id = NEW.username;
+       THEN UPDATE ON Sauvegarde SET user_id = NEW.username;
+       THEN UPDATE ON AimePublication SET user_id = NEW.username;
+       THEN UPDATE ON AimePays SET user_id = NEW.username;
+       END IF;
+    END//
+    DELIMITER;
 
+   /*- gachette d'insertions sur les tables(qui contiennent insertions)
+   DELIMITER//
+   CREATE TRIGGER photoCompagnons
+   AFTER INSERT ON Compagnons
+   FOR EACH ROW
+   BEGIN
+      IF NEW.photo_id != nom_fichier
+      THEN INSERT ON ProfilePic SET nom_fichier = NEW.photo_id
+      END IF;
+   END//
+   DELIMITER;
+ 
+   DELIMITER //
+    CREATE TRIGGER nouvellePhotoCompagnons 
+    AFTER UPDATE ON Compagnons 
+    FOR EACH ROW
+    BEGIN
+       IF NEW.photo_id != OLD.photo_id
+       THEN UPDATE ON ProfilePic SET photo_id = NEW.photo_id
+       END IF;
+    END//
+    DELIMITER;
+ 
+ 
+    PAYS
+    - gachette au cas ou que pays change de noms
+ 
+   DELIMITER//
+   CREATE TRIGGER paysNom
+   AFTER UPDATE ON Pays
+   FOR EACH ROW
+   BEGIN
+      IF NEW.nom != OLD.nom
+      THEN UPDATE ON Pays SET nom = NEW.nom
+      END IF;
+   END//
+   DELIMITER;
+    PUBLICATION
+    - gachette creation photo lie avec publication
+   DELIMITER//
+   CREATE TRIGGER photoInsertionPublication
+   AFTER INSERT ON PublicationPic
+   FOR EACH ROW
+   BEGIN
+      INSERT ON ProfilePic (pub_id integer, nom_fichier)VALUES(NEW.id, NEW.nom_fichier)
+   END//
+   DELIMITER;
+                                  */
+Dispose d’un menu contextuel
 /*------------------Fin Gachettes/trigger------------------*/
 
 
 /*------------------Indexation------------------*/
 
 /*------------------Fin Indexation------------------*/
-
-/*SELECT * FROM Compagnons WHERE username='yey2513' OR email='yey2513';*/

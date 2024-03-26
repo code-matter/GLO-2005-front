@@ -2,9 +2,10 @@
 #     def __init__(self, message):
 #         super().__init__(message)
 
-# class PreconditionException(ContratException):
-#     def __init__(self, message=""):
-#         super().__init__(message)
+class PreconditionException(Exception):
+    def __init__(self, message=""):
+        self.message = message
+        super().__init__(message)
 
 # class PostconditionException(ContratException):
 #     def __init__(self, message=""):

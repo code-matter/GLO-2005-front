@@ -20,7 +20,7 @@ class ApplicationDB:
             autocommit=True
         )
         self.cursor = self.db.cursor()
-
+        self.util = Utilitaire()
 
     def get_element_by_id(self, table: str, id):
         """Le Id peut être le nom, l'identifiant, l'email"""
@@ -62,13 +62,19 @@ class ApplicationDB:
 #---------------------------- Fonction spécifique à une partie du code----------------------------
 
     def inscrireCompagnon(self, username, nom, prenom, courriel, password):
-        
-        if  self.compagnon_existe(username) == False:
-            cmd = f"INSERT INTO Compagnons (username, nom, prenom, email, password) VALUES('{username}', '{nom}','{prenom}', '{courriel}', '{password}')"
+        #Toute les instance vide sont traités avec le server flask
+        if (not self.util.validationMail(courriel)):
+            raise PreconditionException("Le courriel est invalide")
+        if (not self.util.validationPassword(password)):
+            raise PreconditionException("Le mot de passe doit contenir les éléments identifiés")
+        if (self.compagnon_existe(username, courriel)):
+            raise PersonneDejaMembreException
+
+        if  (self.compagnon_existe(username, courriel) == False):
+
+            cmd = f"INSERT INTO Compagnons (username, nom, prenom, email, password) VALUES('{username}', '{nom}','{prenom}', '{courriel}', '{self.util.crypt(password)}')"
             self.cursor.execute(cmd)
             return {'success': True, 'message': 'Inscription réussie'}
-        else:
-            raise PersonneDejaMembreException
 
     def connecterCompagnon(self, identifiant):
         if self.personne_membre(identifiant):
@@ -86,9 +92,9 @@ class ApplicationDB:
         count = self.cursor.fetchone()[0]
         return count == 1
 
-    def compagnon_existe(self, username):
+    def compagnon_existe(self, username, email):
         # Vérifie si le nom d'utilisateur existe déjà dans la base de données
-        sql = f"SELECT COUNT(*) FROM Compagnons WHERE username = '{username}'"
+        sql = f"SELECT COUNT(*) FROM Compagnons WHERE username = '{username}' OR email='{email}'"
         self.cursor.execute(sql)
         count = self.cursor.fetchone()[0]
         return count > 0
@@ -139,13 +145,13 @@ class Utilitaire:
 
     def validationMail(self, email):
         #We know its some of them doesnt exist but for this project we assumed they do!
-        email_services = ["gmail", "yahoo", "outlook", "aol", "icloud", "yandex", "protonmail", "zoho", "mail", "gmx", "live"]
+        email_services = ["gmail", "yahoo", "outlook", "hotmail","aol", "icloud", "yandex", "protonmail", "zoho", "mail", "gmx", "live"]
         domain_extensions = [".com", ".net", ".org", ".edu", ".gov", ".fr", ".uk", ".ca", ".au", ".de", ".in"]
 
         email_domains = [service + extension for service in email_services for extension in domain_extensions]
 
         _, newEmail = email.split("@")
-        print(newEmail)
+        # print(newEmail)
 
         validation = True
         if newEmail not in email_domains:
@@ -168,6 +174,9 @@ class Utilitaire:
         validation = len(mdp) >= 8 and lettreCount >= 1 and numCount >= 1 and specialCount >= 1
 
         return validation
+
+
+
 
 # util = Utilitaire()
 # validation = util.validationMail("yyapi25@gmail.com")
